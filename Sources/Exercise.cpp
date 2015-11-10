@@ -49,10 +49,12 @@ namespace {
 			float u3 = mesh->vertices[i3 * 5 + 3];
 			float v3 = mesh->vertices[i3 * 5 + 4];
 
+			float scale = 100.0f;
+
 			drawTriangle(
-				x1 * 2 + 500, y1 * 2 + 400, z1, u1, v1,
-				x2 * 2 + 500, y2 * 2 + 400, z2, u2, v2,
-				x3 * 2 + 500, y3 * 2 + 400, z3, u3, v3);
+				x1 * scale + width * 0.5f, y1 * scale + height * 0.5f, z1, u1, v1,
+				x2 * scale + width * 0.5f, y2 * scale + height * 0.5f, z2, u2, v2,
+				x3 * scale + width * 0.5f, y3 * scale + height * 0.5f, z3, u3, v3);
 		}
 
 		endFrame();
@@ -84,8 +86,12 @@ namespace {
 }
 
 void shadePixel(int x, int y, float z, float u, float v) {
+	/************************************************************************/
+	/* Exercise 4: Practical Task                                           */
+	/************************************************************************/
 	// Use the passed values to draw a nice pixel using setPixel(x, y, ...).
 	// Use getPixel to read image data, which is returned in the reference parameters.
+	setPixel(x, y, 1.0f, 0.0f, 0.0f);
 }
 
 int kore(int argc, char** argv) {
