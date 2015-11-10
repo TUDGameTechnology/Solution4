@@ -90,7 +90,9 @@ void shadePixel(int x, int y, float z, float u, float v) {
 	/* Exercise 4: Practical Task                                           */
 	/************************************************************************/
 	// Use the passed values to draw a nice pixel using setPixel(x, y, ...).
+	// Implement z-buffering
 	// Use getPixel to read image data, which is returned in the reference parameters.
+	// The texture is provided in the Image "image" (tiger-atlas.jpg in the Deployment-folder)
 	setPixel(x, y, 1.0f, 0.0f, 0.0f);
 }
 
