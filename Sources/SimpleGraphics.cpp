@@ -38,6 +38,9 @@ void clear(float red, float green, float blue) {
 }
 
 void setPixel(int x, int y, float red, float green, float blue) {
+	if (y < 0 || y >= texture->texHeight || x < 0 || x >= texture->texWidth) {
+		return;
+	}
 	int r = (int)(red * 255);
 	int g = (int)(green * 255);
 	int b = (int)(blue * 255);
@@ -66,6 +69,9 @@ void drawImage(Image* image, int x, int y) {
 }
 
 void getPixel(Image* image, int x, int y, float& red, float& green, float& blue) {
+	if (x < 0 || x > image->width || y < 0 || y > image->height) {
+		return;
+	}
 	int col = image->at(x, y);
 	blue = ((col & 0xff0000) >> 16) / 255.0f;
 	green = ((col & 0xff00) >> 8) / 255.0f;
