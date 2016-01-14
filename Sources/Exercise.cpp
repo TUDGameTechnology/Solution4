@@ -85,6 +85,8 @@ namespace {
 	}
 }
 
+float zBuffer[width][height];
+
 void shadePixel(int x, int y, float z, float u, float v) {
 	/************************************************************************/
 	/* Exercise 4: Practical Task                                           */
@@ -93,7 +95,14 @@ void shadePixel(int x, int y, float z, float u, float v) {
 	// Implement z-buffering
 	// Use getPixel to read image data, which is returned in the reference parameters.
 	// The texture is provided in the Image "image" (tiger-atlas.jpg in the Deployment-folder)
-	setPixel(x, y, 1.0f, 0.0f, 0.0f);
+	
+	if (z < zBuffer[x][y]) {
+		return;
+	}
+	zBuffer[x][y] = z;
+	float redPixel, greenPixel, bluePixel;
+	getPixel(image, u*image->width, v*image->height, redPixel, greenPixel, bluePixel);
+	setPixel(x, y, redPixel, greenPixel, bluePixel);
 }
 
 int kore(int argc, char** argv) {
