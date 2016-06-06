@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include <Kore/Application.h>
 #include <Kore/IO/FileReader.h>
 #include <Kore/Math/Core.h>
 #include <Kore/System.h>
@@ -25,6 +24,7 @@ namespace {
 		startFrame();
 
 		clear(0, 0, 0);
+
 		// Add some nice transformations
 		for (int i = 0; i < mesh->numFaces; ++i) {
 			int i1 = mesh->indices[i * 3 + 0];
@@ -72,15 +72,15 @@ namespace {
 		}
 	}
 
-	void mouseMove(int x, int y, int movementX, int movementY) {
+	void mouseMove(int windowId, int x, int y, int movementX, int movementY) {
 
 	}
 	
-	void mousePress(int button, int x, int y) {
+	void mousePress(int windowId, int button, int x, int y) {
 
 	}
 
-	void mouseRelease(int button, int x, int y) {
+	void mouseRelease(int windowId, int button, int x, int y) {
 
 	}
 }
@@ -101,23 +101,40 @@ void shadePixel(int x, int y, float z, float u, float v) {
 	}
 	zBuffer[x][y] = z;
 	float redPixel, greenPixel, bluePixel;
-	getPixel(image, u*image->width, v*image->height, redPixel, greenPixel, bluePixel);
+	getPixel(image, (int) (u*image->width), (int) (v*image->height), redPixel, greenPixel, bluePixel);
 	setPixel(x, y, redPixel, greenPixel, bluePixel);
 }
 
 int kore(int argc, char** argv) {
-	Application* app = new Application(argc, argv, width, height, 0, false, "Exercise4");
-	
-	initGraphics();
-	app->setCallback(update);
 
-	startTime = System::time();
+	Kore::System::setName("TUD Game Technology - ");
+	Kore::System::setup();
+	Kore::WindowOptions options;
+	options.title = "Solution 4";
+	options.width = width;
+	options.height = height;
+	options.x = 100;
+	options.y = 100;
+	options.targetDisplay = -1;
+	options.mode = WindowModeWindow;
+	options.rendererOptions.depthBufferBits = 16;
+	options.rendererOptions.stencilBufferBits = 8;
+	options.rendererOptions.textureFormat = 0;
+	options.rendererOptions.antialiasing = 0;
+	Kore::System::initWindow(options);
+
+	initGraphics();
+	Kore::System::setCallback(update);
+
 	Kore::Mixer::init();
 	Kore::Audio::init();
-	//Kore::Mixer::play(new SoundStream("back.ogg", true));
+
+
+	startTime = System::time();
 
 	mesh = loadObj("tiger.obj");
 	image = new Image("tiger-atlas.jpg", true);
+
 
 	Keyboard::the()->KeyDown = keyDown;
 	Keyboard::the()->KeyUp = keyUp;
@@ -125,9 +142,8 @@ int kore(int argc, char** argv) {
 	Mouse::the()->Press = mousePress;
 	Mouse::the()->Release = mouseRelease;
 
-	app->start();
 
-	delete app;
-	
+	Kore::System::start();
+
 	return 0;
 }

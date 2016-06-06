@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "SimpleGraphics.h"
-#include <Kore/Application.h>
 #include <Kore/IO/FileReader.h>
 #include <Kore/Graphics/Graphics.h>
 #include <Kore/Graphics/Shader.h>
@@ -23,6 +22,9 @@ namespace {
 }
 
 void startFrame() {
+	Graphics::begin();
+	Graphics::clear(Graphics::ClearColorFlag, 0xff000000);
+
 	image = (int*)texture->lock();
 }
 
@@ -44,7 +46,9 @@ void setPixel(int x, int y, float red, float green, float blue) {
 	int r = (int)(red * 255);
 	int g = (int)(green * 255);
 	int b = (int)(blue * 255);
-	image[y * texture->texWidth + x] = 0xff << 24 | r << 16 | g << 8 | b;
+
+	//@@TODO: Test if colors are also ok for DirectX
+	image[y * texture->texWidth + x] = 0xff << 24 | b << 16 | g << 8 | r;
 }
 
 Image* loadImage(const char* filename) {
@@ -234,8 +238,6 @@ void drawTriangle(float x1, float y1, float z1, float u1, float v1, float x2, fl
 void endFrame() {
 	texture->unlock();
 
-	Graphics::begin();
-	Graphics::clear(Graphics::ClearColorFlag, 0xff000000);
 
 
 	program->set();
