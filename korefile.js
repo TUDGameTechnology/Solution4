@@ -1,11 +1,9 @@
-var solution = new Solution('Exercise4');
-var project = new Project('Exercise4');
+let project = new Project('Exercise4', __dirname);
 
 project.addFile('Sources/**');
 project.setDebugDir('Deployment');
 
-project.addSubProject(Solution.createProject('Kore'));
-
-solution.addProject(project)
-
-return solution;
+Project.createProject('Kore', __dirname).then((kore) => {
+	project.addSubProject(kore);
+	resolve(project);
+});
